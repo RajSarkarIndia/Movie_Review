@@ -1,8 +1,0 @@
-package DAO;
-
-public class User {
-	private int UserID;
-private String UserName;
-private String Email;
-private String Password;
-}
