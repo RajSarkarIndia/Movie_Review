@@ -1,0 +1,80 @@
+package DAO;
+
+import java.time.LocalDate;
+
+public class Movie {
+	private int MovieID;
+	private String MovieName;
+	private String Genre;
+	private double MovieRating;
+	private LocalDate ReleaseDate;
+	private int Length;
+	private String Trailer;
+
+	public String getTrailer() {
+		return Trailer;
+	}
+
+	public void setTrailer(String trailer) {
+		Trailer = trailer;
+	}
+
+	public int getMovieID() {
+		return MovieID;
+	}
+
+	public void setMovieID(int movieID) {
+		MovieID = movieID;
+	}
+
+	public String getMovieName() {
+		return MovieName;
+	}
+
+	public void setMovieName(String movieName) {
+		MovieName = movieName;
+	}
+
+	public String getGenre() {
+		return Genre;
+	}
+
+	public void setGenre(String genre) {
+		Genre = genre;
+	}
+
+	public double getMovieRating() {
+		return MovieRating;
+	}
+
+	public void setMovieRating(double movieRating) {
+		MovieRating = movieRating;
+	}
+
+	public LocalDate getReleaseDate() {
+		return ReleaseDate;
+	}
+
+	public void setReleaseDate(LocalDate releaseDate) {
+		ReleaseDate = releaseDate;
+	}
+
+	public int getLength() {
+		return Length;
+	}
+
+	public void setLength(int length) {
+		Length = length;
+	}
+
+	public String getMovieImageURL() {
+		return MovieImageURL;
+	}
+
+	public void setMovieImageURL(String movieImageURL) {
+		MovieImageURL = movieImageURL;
+	}
+
+	private String MovieImageURL;
+
+}

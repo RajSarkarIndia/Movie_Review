@@ -1,0 +1,64 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%>
+<%@ page import="java.util.List"%>
+<%@ page import="DAO.User"%>
+<%@ page isELIgnored="false"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>User/Admin Profile</title>
+</head>
+<body>
+
+<%
+List<User> userList = null;
+List<User> adminList = null;
+
+if (session.getAttribute("UserName") != null) {
+    userList = (List<User>) session.getAttribute("UserDetails");
+    if (userList != null && !userList.isEmpty()) {
+        User u = userList.get(0);
+%>
+<h1>UserName: <%= u.getUserName() %></h1>
+<h2>Email: <%= u.getEmail() %></h2>
+<h2>Password: <%= u.getPassword() %></h2>
+<form action="/MovieReview/logout">
+<input type="submit" value="Log out">
+</form>
+<%
+    }
+} else if (session.getAttribute("AdminName") != null) {
+    adminList = (List<Admin>) session.getAttribute("AdminDetails");
+    if (adminList != null && !adminList.isEmpty()) {
+        Admin a = adminList.get(0);
+%>
+<h1>UserName: <%= a.getAdminName() %></h1>
+<h2>Email: <%= a.getEmail() %></h2>
+<h2>Password: <%= a.getPassword() %></h2>
+<form action="/MovieReview/logout">
+<input type="submit" value="Log out">
+</form>
+<h1>Add Movies</h1>
+<form action="/AddMovie">
+<label for="MovieName">MovieName</label>
+<input type="text" name="MovieName" required>
+<label for="Genre">Genre</label>
+<input type="text" name="Genre" required>
+<label for="ReleaseDate">ReleaseDate</label>
+<input type="date" name="ReleaseDate" required>
+<label for="Length">Length</label>
+<input type="text" name="Length" required>
+<label for="MovieImageURL">MovieImageURL</label>
+<input type="text" name="MovieImageURL" required>
+<label for="Trailer">Trailer Link</label>
+<input type="text" name="Trailer" required>
+<input type="submit" value="Add">
+</form>
+<%
+    }
+}
+%>
+
+</body>
+</html>

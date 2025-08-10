@@ -1,0 +1,31 @@
+package DAO;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+
+import org.springframework.jdbc.core.RowMapper;
+import model.Movie;  // your Movie POJO class
+
+public class MovieRowMapper implements RowMapper<Movie> {
+
+    @Override
+    public Movie mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Movie movie = new Movie();
+
+        movie.setMovieId(rs.getInt("MovieID"));
+        movie.setMovieName(rs.getString("MovieName"));
+        movie.setGenre(rs.getString("Genre"));
+        movie.setMovieRating(rs.getDouble("MovieRating"));
+
+        java.sql.Date sqlDate = rs.getDate("ReleaseDate");
+        if (sqlDate != null) {
+            movie.setReleaseDate(sqlDate.toLocalDate());
+        }
+
+        movie.setLength(rs.getInt("Length"));
+        movie.setMovieImageURL(rs.getString("MovieImageURL"));
+
+        return movie;
+    }
+}

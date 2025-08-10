@@ -1,0 +1,175 @@
+package configaration;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import DAO.AdminLoginVerify;
+import DAO.LoginVerify;
+import DAO.Movie;
+import DAO.MovieRepository;
+import DAO.Review;
+import DAO.ReviewRepository;
+import DAO.ReviewRowMapper;
+import DAO.User;
+import DAO.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
+@Controller
+public class myController {
+	@Autowired
+	private JdbcTemplate jdbctemplate;
+	@Autowired
+	private LoginVerify db;
+	@Autowired
+	private AdminLoginVerify db2;
+	@Autowired
+	private MovieRepository movieRepository;
+	@Autowired
+	private ReviewRepository reviewrepository;
+	@Autowired
+	private UserRepository userrepository;
+
+	@RequestMapping({ "/", "/index" })
+	public String showMovies(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+
+		List<Movie> movies = movieRepository.findAllMovies();
+		session.setAttribute("movies", movies);
+		List<Movie> Topmovies = movieRepository.findTopMovies();
+		session.setAttribute("Topmovies", Topmovies);
+
+		return "index";
+	}
+
+	@PostMapping("/LoginCheckUser")
+	public String loginCheck(@RequestParam("UserName") String userName, @RequestParam("Password") String password,
+			HttpServletRequest request) {
+
+		boolean isValidUser = db.check(userName, password);
+
+		if (isValidUser) {
+			HttpSession session = request.getSession();
+			session.setAttribute("UserName", userName);
+			session.setMaxInactiveInterval(30 * 60);
+			return "redirect:/index";
+		} else {
+
+			return "redirect:/LoginCheck.jsp";
+		}
+	}
+
+	@PostMapping("/LoginCheckAdmin")
+	public String AdminloginCheck(@RequestParam("UserName") String userName, @RequestParam("Password") String password,
+			HttpServletRequest request) {
+
+		boolean isValidUser = db2.check(userName, password);
+
+		if (isValidUser) {
+			HttpSession session = request.getSession();
+			session.setAttribute("AdminName", userName);
+			session.setMaxInactiveInterval(30 * 60);
+			return "redirect:/index";
+		} else {
+
+			return "redirect:/AdminLoginCheck.jsp";
+		}
+	}
+
+	@GetMapping("/SelectedFlim")
+	public ModelAndView selectMovie(@RequestParam("search") String keyword, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		List<Movie> list = movieRepository.findMovie(keyword);
+		List<Review> list2 = reviewrepository.getReviews(keyword);
+		Double rating = movieRepository.CountRating(keyword);
+		if (rating != null) {
+			rating = new BigDecimal(rating).setScale(2, RoundingMode.HALF_UP).doubleValue();
+		} else {
+			rating = 0.0;
+		}
+		session.setAttribute("TotalRating", rating);
+
+		session.setAttribute("Movie", list);
+		session.setAttribute("Reviews", list2);
+		mav.setViewName("movie");
+		return mav;
+	}
+
+	@GetMapping("/addreview")
+	public String InsertReview(@RequestParam("review") String review, @RequestParam("star") Double star,
+			HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Movie movie = (Movie) session.getAttribute("moviename");
+		if (movie != null) {
+			session.removeAttribute("moviename");
+		}
+		String moviename = movie != null ? movie.getMovieName() : null;
+		String username = (String) session.getAttribute("UserName");
+
+		jdbctemplate.update(
+				"insert into Review(MovieName, UserName, UserRating, Review, CreatedAt) values (?, ?, ?, ?, ?)",
+				moviename, username, star, review, java.sql.Timestamp.valueOf(LocalDateTime.now()));
+		return "redirect:/index";
+	}
+
+	@GetMapping("/AddMovie")
+	public String addmovie(@ModelAttribute Movie movie, HttpServletRequest request) {
+		userrepository.addmovieintodb(request, movie);
+
+		return "redirect:/index";
+	}
+
+	@GetMapping("/AllMovie")
+	public ModelAndView allmovie() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("AllMovie");
+		return mav;
+	}
+
+	@GetMapping("/profile")
+	public ModelAndView profile(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("profile");
+		if (session.getAttribute("UserName") != null)
+			userrepository.userDetails(request);
+		else if (session.getAttribute("AdminName") != null)
+			userrepository.AdminDetails(request);
+		return mav;
+
+	}
+
+@PostMapping("/CreateUser")
+public void createuser(@RequestParam("UserName") String username,@RequestParam("Email")String Email,@RequestParam("Password")String Password {
+	
+	
+	
+	
+}
+
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("UserName") != null)
+			session.removeAttribute("UserName");
+		else
+			session.removeAttribute("AdminName");
+
+		return "redirect:/index";
+	}
+
+}

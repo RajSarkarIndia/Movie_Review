@@ -1,0 +1,25 @@
+package DAO;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class DBDAOClass {
+
+@Autowired
+private JdbcTemplate jdbctemplate;
+
+	public boolean check(String username,String Password) {
+String Query="SELECT COUNT(*) FROM user WHERE username = ? AND password = ?";
+		int result = jdbctemplate.update(Query,username,Password);
+		if (result > 0)
+			return true;
+		else
+			return false;
+	}
+	
+	
+	
+
+}

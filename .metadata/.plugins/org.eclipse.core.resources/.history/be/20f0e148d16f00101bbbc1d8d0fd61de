@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+</head>
+<body>
+<div>
+<h3>User Login</h3>
+<form action="MovieReview/LoginCheckUser" method="post">
+<label for="UserName">User Name</label>
+<input type="text" name="UserName" required>
+<label for="Password">Password</label>
+<input type="password" name="Password" required>
+<input type="submit" value="Login">
+</form>
+</div>
+</body>
+</html>

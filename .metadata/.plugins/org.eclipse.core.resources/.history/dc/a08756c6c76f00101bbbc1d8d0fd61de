@@ -1,0 +1,29 @@
+package configaration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+@Configuration
+@EnableWebMvc
+@ComponentScan("configaration")
+public class JBspringConfigFile {
+
+@Bean
+public DriverManagerDataSource DMDS() {
+	
+DriverManagerDataSource dmds=new DriverManagerDataSource();
+dmds.setDriverClassName(null);
+dmds.setUrl(null);
+dmds.setUsername("root");
+dmds.setPassword("Raj@1234");
+return dmds;
+}
+
+
+	
+	
+	
+}

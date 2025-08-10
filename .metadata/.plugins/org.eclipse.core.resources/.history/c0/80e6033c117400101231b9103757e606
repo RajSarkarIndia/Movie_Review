@@ -1,0 +1,19 @@
+package DAO;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class ReviewRowMapper implements RowMapper<Review> {
+	@Override
+	public Movie mapRow(ResultSet rs, int rowNum) throws SQLException {
+		return null;
+		
+		
+	}
+
+}

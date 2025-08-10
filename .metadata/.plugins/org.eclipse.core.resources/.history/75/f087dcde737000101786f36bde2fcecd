@@ -1,0 +1,14 @@
+package DAO;
+
+@Repository
+public class MovieRepository {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    private final String SELECT_ALL_MOVIES = "SELECT * FROM Movie";
+
+    public List<Movie> findAllMovies() {
+        return jdbcTemplate.query(SELECT_ALL_MOVIES, new MovieRowMapper());
+    }
+}

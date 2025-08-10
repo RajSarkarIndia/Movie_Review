@@ -1,0 +1,11 @@
+package configaration;
+
+import org.springframework.stereotype.Component;
+
+public class JDBCbean {
+
+	
+	
+	
+	
+}

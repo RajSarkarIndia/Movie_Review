@@ -1,0 +1,152 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ page import="java.util.List" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Movies</title>
+<style>
+  /* Header list styles */
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    width: 100%;
+  }
+  li {
+    margin: 0;
+    flex: 1;
+    text-align: center;
+  }
+  li:first-child {
+    text-align: left;
+  }
+  li:last-child {
+    text-align: right;
+  }
+  form {
+    margin: 0;
+  }
+
+  /* Container for movies covering 50% width and centered */
+  .movie-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 16px;          /* Gap between cards */
+    width: 50%;
+    margin: 0 auto;
+  }
+  /* Each movie card with fixed width and gap */
+  .movie-item {
+    border: 1px solid black;
+    box-sizing: border-box;
+    width: 240px;       /* Fixed width */
+    text-align: center;
+  }
+  .movie-item img {
+    width: 240px;
+    height: 320px;      /* Fixed height to expand smaller images */
+    object-fit: cover;  /* Crop/expand image to fit without distortion */
+    display: block;
+  }
+  .movie-item h6 {
+    margin: 8px;
+  }
+
+  /* Responsive fallback: full width on smaller screens */
+  @media (max-width: 768px) {
+    .movie-container {
+      width: 100%;
+      justify-content: center;
+    }
+    .movie-item {
+      width: 45%; /* roughly 2 per row */
+    }
+    .movie-item img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+  @media (max-width: 480px) {
+    .movie-item {
+      width: 100%;
+    }
+    .movie-item img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- header -->
+<ul>
+  <li><a href="/MovieRating/AllMovie">All Movies</a></li>
+  <li>
+    <form action="/MovieReview/SelectedFlim">
+      <input type="search" name="search" placeholder="Enter Flim Name" />
+      <input type="submit" value="Search" />
+    </form>
+  </li>
+  <li>
+    <% if(session.getAttribute("UserName") == null) { %>
+      <a href="LoginCheck.jsp">Login</a>
+    <% } else { %>
+      <%= session.getAttribute("UserName") %>
+    <% } %>
+  </li>
+</ul>
+
+<h3 style="text-align:center;">New Movies</h3>
+
+<div class="movie-container">
+<%
+    List movies = (List) session.getAttribute("movies");
+    if (movies != null && !movies.isEmpty()) {
+        for (int i = 0; i < Math.min(6, movies.size()); i++) {
+            request.setAttribute("movie", movies.get(i));
+%>
+    <div class="movie-item">
+      <a href="/MovieReview/SelectedFlim?search=${movie.movieName}">${movie.movieName}
+        <img src="${pageContext.request.contextPath}/image/${movie.movieImageURL}" alt="${movie.movieName}" />
+        <h4>Rating: ${movie.getMovieRating()}</h6>
+        <h4>Released: ${movie.getReleaseDate()}</h6>
+      </a>
+    </div>
+<%
+        }
+    } else {
+%>
+    <p>No movies available.</p>
+<%
+    }
+%>
+</div>
+<h3 style="text-align:center;">Top Movie</h3>
+<div class="movie-container">
+<%
+	
+List topmovie=(List)session.getAttribute("Topmovies");
+if (topmovie != null && !topmovie.isEmpty()) {
+    for (int i = 0; i < Math.min(6, topmovie.size()); i++) {
+        request.setAttribute("Topmovie", topmovie.get(i));
+%>
+<div class="movie-item">
+   <a href="/MovieReview/SelectedFlim?search=${Topmovie.movieName}">${Topmovie.movieName}
+    <img src="${pageContext.request.contextPath}/image/${Topmovie.movieImageURL}" alt="${Topmovie.movieName}" />
+    <h4>Rating: ${Topmovie.movieRating}</h4>
+  </a>
+</div>
+
+<%}} %>
+</div>
+</body>
+</html>

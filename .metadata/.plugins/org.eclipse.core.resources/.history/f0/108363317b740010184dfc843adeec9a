@@ -1,0 +1,68 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ page isELIgnored="false" %>
+    <%@ page import="java.util.List" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<%List movie = (List) session.getAttribute("Movie");
+Double rating=(Double)session.getAttribute("TotalRating");
+request.setAttribute("movie", movie.get(0));%>
+<h3>Searched Movie:</h3>${movie.getMovieName()}
+<img src="${pageContext.request.contextPath}/image/${movie.getMovieImageURL()}" alt="${movie.getMovieName()}" />
+<h3>Movie Rating</h3>${rating}
+<h3>Released on: </h3>${movie.getReleaseDate()}
+<h3>Genre: </h3>${movie.getGenre()}
+<h3>Movie Length</h3>${movie.getLength()}<h6>in minutes</h6>
+
+<!-- Reviews -->
+<h1>Reviews</h1>
+<%if(session.getAttribute("UserName")!=null){%>
+
+<%Object firstMovie = movie.get(0);
+session.setAttribute("moviename",firstMovie); %>
+<form action="/MovieReview/addreview">
+<label for="review">Add Review</label>
+<label for="star">Enter Rating upto 10</label>
+<input type="text" name="star" required><br>
+<label for="review">Enter Your review</label>
+<input type="text" name="review" required>
+<br>
+<input type="submit" value="Add Review">
+</form>
+<%}else{%>
+<h4>Login to Add Review: <a href="LoginCheck.jsp">Login</a></h4>
+<%} %>
+
+<%
+    // Get the list of Review objects from session
+    List reviewList = (List) session.getAttribute("Reviews");
+
+    if (reviewList != null && !reviewList.isEmpty()) {
+        for (int i = 0; i < reviewList.size(); i++) {
+            
+        	request.setAttribute("review", reviewList.get(i));
+%>
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+      <h3>Username: ${review.userName}</h3>
+      <p>Rating: ${review.userRating}/10</p>
+      <p>Review: ${review.review}</p>
+      <h5>Posted on: ${review.createdAt}</h5>
+    </div>
+<%
+        }
+    } else {
+%>
+        <p>No reviews found.</p>
+<%
+    }
+%>
+
+
+
+</body>
+</html>

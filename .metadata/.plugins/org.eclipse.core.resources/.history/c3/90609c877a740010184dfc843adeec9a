@@ -1,0 +1,27 @@
+@Repository
+public class MovieRepository {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private MovieRowMapper movieRowMapper; // inject the mapper
+    
+    private final String query1 = "SELECT * FROM Movie order by ReleaseDate DESC";
+
+    public List<Movie> findAllMovies() {
+        return jdbcTemplate.query(query1, movieRowMapper);
+    }
+
+    // Keep other methods same
+
+    public Double CountRating(String movie) {
+        String sql = "SELECT AVG(UserRating) FROM Review where MovieName=?";
+        Double rating = jdbcTemplate.queryForObject(sql, Double.class, movie);
+        if (rating == null) {
+            return 0.0;
+        } else {
+            return rating;
+        }
+    }
+}

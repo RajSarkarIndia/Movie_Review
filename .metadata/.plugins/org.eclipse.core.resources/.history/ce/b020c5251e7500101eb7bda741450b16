@@ -1,0 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+</body><div>
+<h3>Admin Login</h3>
+<form action="${pageContext.request.contextPath}/LoginCheckAdmin" method="post">
+<label for="UserName">User Name</label>
+<input type="text" name="UserName" required>
+<label for="Password">Password</label>
+<input type="password" name="Password" required>
+<input type="submit" value="Login">
+</form>
+</div>
+
+</html>

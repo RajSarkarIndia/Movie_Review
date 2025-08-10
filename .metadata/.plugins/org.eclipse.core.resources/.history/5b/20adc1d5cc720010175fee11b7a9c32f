@@ -1,0 +1,229 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ page import="java.util.List" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Movies</title>
+<style>
+  /* Header list styles */
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    width: 100%;
+  }
+  li {
+    margin: 0;
+    flex: 1;
+    text-align: center;
+  }
+  li:first-child {
+    text-align: left;
+  }
+  li:last-child {
+    text-align: right;
+  }
+  form {
+    margin: 0;
+  }
+
+  /* Container for movies covering 50% width and centered */
+  .movie-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 16px;          /* Gap between cards */
+    width: 50%;
+    margin: 0 auto;
+  }
+  /* Each movie card with fixed width and gap */
+  .movie-item {
+    border: 1px solid black;
+    box-sizing: border-box;
+    width: 240px;       /* Fixed width */
+    text-align: center;
+    padding-bottom: 12px;
+  }
+  .movie-item img {
+    width: 240px;
+    height: 320px;      /* Fixed height for image consistency */
+    object-fit: cover;  /* Crop/expand image to fit without distortion */
+    display: block;
+  }
+  .movie-item h4, .movie-item div {
+    margin: 8px 0 0 0;
+  }
+
+  /* Stars styling */
+  .stars {
+    font-size: 18px;
+    color: #fbc02d; /* Gold color for stars */
+    margin-bottom: 4px;
+  }
+  .half-star {
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    overflow: hidden;
+    color: #fbc02d;
+  }
+  .half-star::after {
+    content: '\2605'; /* Unicode star */
+    position: absolute;
+    left: 50%;
+    top: 0;
+    color: #ddd; /* Gray for the 'empty' half */
+  }
+
+  /* Responsive fallback: full width on smaller screens */
+  @media (max-width: 768px) {
+    .movie-container {
+      width: 100%;
+      justify-content: center;
+    }
+    .movie-item {
+      width: 45%; /* roughly 2 cards per row */
+    }
+    .movie-item img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+  @media (max-width: 480px) {
+    .movie-item {
+      width: 100%;
+    }
+    .movie-item img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- header -->
+<ul>
+  <li><a href="/allGenra">All genra</a></li>
+  <li>
+    <form action="">
+      <input type="search" placeholder="Enter Flim Name" />
+      <input type="submit" value="Search" />
+    </form>
+  </li>
+  <li>
+    <% if(session.getAttribute("UserName") == null) { %>
+      <a href="loginCheck.jsp">Login</a>
+    <% } else { %>
+      <%= session.getAttribute("UserName") %>
+    <% } %>
+  </li>
+</ul>
+
+<h3 style="text-align:center;">New Movies</h3>
+
+<div class="movie-container">
+<%
+    List movies = (List) session.getAttribute("movies");
+    if (movies != null && !movies.isEmpty()) {
+        for (int i = 0; i < Math.min(6, movies.size()); i++) {
+            request.setAttribute("movie", movies.get(i));
+%>
+    <div class="movie-item">
+      <a href="#">
+        <img src="${pageContext.request.contextPath}/image/${movie.movieImageURL}" alt="${movie.movieName}" />
+        
+        <h4>${movie.movieName}</h4>
+
+        <%-- Star rating based on 10-point scale --%>
+        <%
+          double rating10 = (double) ((Number)movie.getClass().getMethod("getMovieRating").invoke(movie)).doubleValue();
+          double rating5 = rating10 / 2.0;
+          int fullStars = (int) rating5;
+          double fraction = rating5 - fullStars;
+          boolean halfStar = fraction >= 0.25 && fraction < 0.75;
+          int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+        %>
+        <div class="stars">
+          <% for (int star=0; star < fullStars; star++) { %>
+            &#9733; <%-- filled star --%>
+          <% } %>
+          <% if (halfStar) { %>
+            <span class="half-star">&#9733;</span> <%-- half star --%>
+          <% } %>
+          <% for (int star=0; star < emptyStars; star++) { %>
+            &#9734; <%-- empty star --%>
+          <% } %>
+        </div>
+        <div>
+          Rating: <%= String.format("%.1f", rating10) %> / 10
+        </div>
+        <h4>Released: ${movie.releaseDate}</h4>
+      </a>
+    </div>
+<%
+        }
+    } else {
+%>
+    <p style="text-align:center; color: #666;">No movies available.</p>
+<%
+    }
+%>
+</div>
+
+<h3 style="text-align:center;">Top Movie</h3>
+<div class="movie-container">
+<%
+    List topmovie = (List) session.getAttribute("Topmovies");
+    if (topmovie != null && !topmovie.isEmpty()) {
+        for (int i = 0; i < Math.min(6, topmovie.size()); i++) {
+            // Use consistent attribute name 'movie' for EL
+            request.setAttribute("movie", topmovie.get(i));
+%>
+<div class="movie-item">
+  <a href="#">
+    <img src="${pageContext.request.contextPath}/image/${movie.movieImageURL}" alt="${movie.movieName}" />
+    <h4>${movie.movieName}</h4>
+    <%-- Star rating based on 10-point scale for top movies --%>
+    <%
+      double rating10 = (double) ((Number)movie.getClass().getMethod("getMovieRating").invoke(movie)).doubleValue();
+      double rating5 = rating10 / 2.0;
+      int fullStars = (int) rating5;
+      double fraction = rating5 - fullStars;
+      boolean halfStar = fraction >= 0.25 && fraction < 0.75;
+      int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    %>
+    <div class="stars">
+      <% for (int star=0; star < fullStars; star++) { %>
+        &#9733;
+      <% } %>
+      <% if (halfStar) { %>
+        <span class="half-star">&#9733;</span>
+      <% } %>
+      <% for (int star=0; star < emptyStars; star++) { %>
+        &#9734;
+      <% } %>
+    </div>
+    <div>
+      Rating: <%= String.format("%.1f", rating10) %> / 10
+    </div>
+  </a>
+</div>
+<%
+        }
+    } else {
+%>
+<p style="text-align:center; color: #666;">No top movies available.</p>
+<%
+    }
+%>
+</div>
+</body>
+</html>

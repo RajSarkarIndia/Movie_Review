@@ -1,0 +1,39 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page import="java.util.List"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<!-- User profile -->
+	<%if(session.getAttribute("UserName")!=null)
+		List user=(List)session.getAttribute("userDetails");
+else if(session.getAttribute("AdminName")!=null)
+	List admin=(List)session.getAttribute("AdminDetails");
+%>
+
+
+
+	<!-- User profile -->
+	<h1>UserName:${user.getUserName}</h1>
+	<h2>Email: ${user.getEmail}</h2>
+	<h2>Password: ${user.getPassword}</h2>
+
+	<!-- Admin profile -->
+	<h1>UserName:${admin.getUserName}</h1>
+	<h2>Email: ${admin.getEmail}</h2>
+	<h2>Password: ${admin.getPassword}</h2>
+<h1>Add movie</h1>
+<form>
+
+
+
+
+</form>
+
+
+</body>
+</html>
