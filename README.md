@@ -44,18 +44,17 @@ This is a full-stack Movie Review web application built with Java, Servlets, JSP
 
 ## Screenshots
 
-*Stylish login page with animated background*
+Screenshots
+Admin Login Page
 
-![Login Page](docs/screenshots/login.png)
-
-*Movie detail page with trailer and reviews*
-
-![Movie Detail Page](docs/screenshots/movie_detail.png)
-
-*Admin panel for movie management*
-
-![Admin Panel](docs/screenshots/admin_panel.png)
-
+![Admin Login](GitHubImages/adminLogin Login Page
+![User Login](GitHubImages/UserLogin.png 1
+![Index Page 1](GitHubImages/index1.png 2
+![Index Page 2](GitHubImages/index2.png After Login
+![Index After Login](GitHubImages/index Page
+![Profile Page](GitHubImages/profile.png Film Pages
+![Selected Film 1](GitHubImages/selectedglim1.png]
+![Selected Film 2](GitHubImages/selectedflim2.png]
 ---
 
 ## Getting Started

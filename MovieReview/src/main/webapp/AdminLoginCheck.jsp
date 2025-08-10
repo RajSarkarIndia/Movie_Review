@@ -131,11 +131,11 @@
 <div class="login-card" role="main" aria-label="Admin Login Form">
   <h3>Admin Login</h3>
   <form action="/MovieReview/LoginCheckAdmin" method="post" autocomplete="off">
-    <label for="UserName">User Name</label>
-    <input id="UserName" name="UserName" type="text" required autocomplete="username" autofocus>
+    <label for="UserName">Admin Name</label>
+    <input id="UserName" name="UserName" type="text" placeholder="Enter AdminName"required autocomplete="username" autofocus>
 
     <label for="Password">Password</label>
-    <input id="Password" name="Password" type="password" required autocomplete="current-password">
+    <input id="Password" name="Password" type="password" placeholder="Enter Password" required autocomplete="current-password">
 
     <input type="submit" value="Login">
   </form>

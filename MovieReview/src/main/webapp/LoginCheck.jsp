@@ -1,6 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page isELIgnored="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,13 +6,12 @@
 <title>User Login</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-  
   body, html {
     margin: 0; padding: 0;
     height: 100%;
     font-family: 'Poppins', sans-serif;
     overflow: hidden;
-    background: linear-gradient(270deg, #6a8cd4, #9a85ca, #7465a1, #b796d9);
+    background: linear-gradient(270deg, #7465a1, #9a85ca, #6a8cd4, #b796d9);
     background-size: 800% 800%;
     animation: gradientAnimate 25s ease infinite;
     display: flex;
@@ -26,7 +23,6 @@
     50%{background-position:100% 50%}
     100%{background-position:0% 50%}
   }
-
   #particles {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -37,19 +33,18 @@
   .particle {
     position: absolute;
     border-radius: 50%;
-    background: rgba(255,255,255,0.12);
+    background: rgba(255 255 255 / 0.12);
     animation: floatUp 15s linear infinite;
   }
   @keyframes floatUp {
     0% { transform: translateY(100vh) scale(0.6); opacity: 1; }
     100% { transform: translateY(-20vh) scale(1); opacity: 0; }
   }
-
   .login-card {
     position: relative;
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255 255 255 / 0.95);
     border-radius: 22px;
-    box-shadow: 0 18px 45px rgba(0,0,0,0.25);
+    box-shadow: 0 18px 45px rgba(0 0 0 / 0.25);
     padding: 48px 40px 56px;
     width: 360px;
     z-index: 1;
@@ -58,23 +53,22 @@
   .login-card h3 {
     margin-bottom: 28px;
     font-size: 2.1rem;
-    color: #3b1d90;
+    color: #4b3b85;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 1.1px;
   }
-
   label {
     display: block;
     text-align: left;
     font-weight: 600;
-    color: #555273;
+    color: #615f7f;
     margin: 20px 0 8px 0;
     font-size: 1rem;
   }
   input[type="text"], input[type="password"] {
     width: 100%;
     padding: 14px 18px;
-    border: 2px solid #cac3e2;
+    border: 2.2px solid #cac3e2;
     border-radius: 12px;
     font-size: 1.1rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -85,7 +79,6 @@
     border-color: #685cd4;
     box-shadow: 0 0 16px #685cd4aa;
   }
-
   input[type="submit"] {
     margin-top: 38px;
     width: 100%;
@@ -104,15 +97,9 @@
     background: #5049b6;
     box-shadow: 0 14px 38px #5049b6dd;
   }
-
   @media (max-width: 400px) {
-    .login-card {
-      width: 90vw;
-      padding: 36px 24px 40px;
-    }
-    .login-card h3 {
-      font-size: 1.75rem;
-    }
+    .login-card { width: 90vw; padding: 36px 24px 40px; }
+    .login-card h3 { font-size: 1.75rem; }
   }
 </style>
 </head>
@@ -122,13 +109,11 @@
 
 <div class="login-card" role="main" aria-label="User Login Form">
   <h3>User Login</h3>
-  <form action="${pageContext.request.contextPath}/LoginCheckUser" method="post" autocomplete="off">
+  <form action="/MovieReview/LoginCheckUser" method="post" autocomplete="off">
     <label for="UserName">User Name</label>
-    <input id="UserName" name="UserName" type="text" required autocomplete="username" autofocus>
-
+    <input id="UserName" name="UserName" type="text" placeholder="Enter UserName" required autocomplete="username" autofocus>
     <label for="Password">Password</label>
-    <input id="Password" name="Password" type="password" required autocomplete="current-password">
-
+    <input id="Password" name="Password" type="password" placeholder="Enter Password" required autocomplete="current-password">
     <input type="submit" value="Login">
   </form>
 </div>
